@@ -33,8 +33,17 @@ To display the data on an RGB matrix like mine you'd need:
 1. Set up an Android VM on something, using an ISO from https://www.android-x86.org/. I pretty much just followed [this video](https://www.youtube.com/watch?v=pLSzeSu1GjM) since I use Proxmox. It's pretty straightforward though.
 2. Add a Google account, and download the babytracker app from the play store, log in with your babytracker account.
 3. Install Tasker from the play store. Add a scheduled task to scp the app database files (/data/data/com.nighp.babytracker_android/databases/babytracker*) to your local box of choice, I do it every 2 mins. The wildcard is important because you want the wal file as well as .dbfile so sqlite can see the most recent events which haven't been committed to the database yet (it will do this automatically as long as the files are in the same dir). You'll need to check "run as root" or it won't be allowed to see the app path. I also had to mess around with keys to make this programmatic and not have it ask for a password each time - in the end I created SSH keys on a different box, put the private key in /data/media (the only place where I could then assign it the right 600 permissions so SSH didn't complain), specified that as a -i argument in the SCP command, and added the public key to authorized_keys at the other end.
-4. Prepare an MQTT server somewhere
+4. Prepare an MQTT server somewhere.
 5. Run babytracker.py wherever you've put the database (I have the cron run it every minute), and give it the details for your MQTT server. (There might be a way to do all this directly on the Android VM, but I found it easiest to get things off it ASAP and into an environment where's it's easier to do stuff).
-6. If you're using a matrixportal, prep it using the [adafruit instructions](https://learn.adafruit.com/adafruit-matrixportal-m4/prep-the-matrixportal), paying particular attention to the [circuitpython part](https://learn.adafruit.com/adafruit-matrixportal-m4/prep-the-matrixportal)
-7. Copy code.py, graphics.py, secrets.py and the bmp, fonts and lib directories onto your matrixportal device over USB.  Update secrets.py with your WiFi and MQTT details, and it should hopefully work. If not, run putty or something to see what it's saying on the serial port.
+6. If you're using a matrixportal, prep it using the [adafruit instructions](https://learn.adafruit.com/adafruit-matrixportal-m4/prep-the-matrixportal), paying particular attention to the [circuitpython part](https://learn.adafruit.com/adafruit-matrixportal-m4/prep-the-matrixportal).
+
+  You'll need these libraries from your circuit python install in /libs on the matrixportal:
+
+- adafruit_bitmap_font
+- adafruit_display_shapes
+- adafruit_display_text
+- adafruit_esp32spi
+- adafruit_minimqtt
+   
+8. Copy code.py, graphics.py, secrets.py and the fonts dir onto your matrixportal device over USB.  Update secrets.py with your WiFi and MQTT details, and it should hopefully work. If not, run putty or something to see what it's saying on the serial port.
 
