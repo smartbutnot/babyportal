@@ -12,8 +12,6 @@ from adafruit_esp32spi import adafruit_esp32spi_wifimanager
 from digitalio import DigitalInOut
 import adafruit_minimqtt.adafruit_minimqtt as MQTT
 import graphics
-import json
-import time
 
 bit_depth = 6
 base_width = 64
@@ -106,10 +104,10 @@ def message(client, topic, message):
             boobtotal=int(message)
             graphics.updateDashLabel('{:02d}:{:02d}'.format(*divmod(boobtotal, 60)),5)
         elif(topic=='baby/nursingleft'):
-            #graphics.updateDashLabel(message,6)
-            boobleft=int(message)
-            boobratio=int(round(((boobleft/boobtotal)*20)))
-            graphics.updateGraph(boobratio)
+            if(boobtotal>0):
+                boobleft=int(round(((int(message)/boobtotal)*20)))
+                graphics.updateGraph(boobleft)
+        
         
     graphics.showDisplay(display)
 
