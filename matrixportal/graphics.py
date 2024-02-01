@@ -74,22 +74,14 @@ boobTg= displayio.TileGrid(boobBmp, pixel_shader=boobPalette)
 boobG=displayio.Group(x=offset+1,y=24)
 boobG.append(boobTg)
 
-graphBmp = displayio.Bitmap(20, 3, 2)
+graphBmp = displayio.Bitmap(5, 20, 2)
 graphPalette = displayio.Palette(2)
 graphPalette[1] = darkPalette[3]
 graphPalette[0] = 0x000000
-graphBmp[0,0]=graphBmp[1,0]=graphBmp[2,0]=graphBmp[3,0]=graphBmp[4,0]=graphBmp[5,0]=1
-graphBmp[6,0]=graphBmp[7,0]=graphBmp[8,0]=graphBmp[9,0]=graphBmp[10,0]=1
-graphBmp[11,0]=graphBmp[12,0]=graphBmp[13,0]=graphBmp[14,0]=graphBmp[15,0]=1
-graphBmp[16,0]=graphBmp[17,0]=graphBmp[18,0]=graphBmp[19,0]=1
-graphBmp[0,2]=graphBmp[1,2]=graphBmp[2,2]=graphBmp[3,2]=graphBmp[4,2]=graphBmp[5,2]=1
-graphBmp[6,2]=graphBmp[7,2]=graphBmp[8,2]=graphBmp[9,2]=graphBmp[10,2]=1
-graphBmp[11,2]=graphBmp[12,2]=graphBmp[13,2]=graphBmp[14,2]=graphBmp[15,2]=1
-graphBmp[16,2]=graphBmp[17,2]=graphBmp[18,2]=graphBmp[19,2]=1
-
+graphBmp[0,19]=graphBmp[1,19]=graphBmp[3,19]=graphBmp[4,19]=1
 
 graphTg= displayio.TileGrid(graphBmp, pixel_shader=graphPalette)
-graphG=displayio.Group(x=offset+42,y=26)
+graphG=displayio.Group(x=offset+52,y=11)
 graphG.append(graphTg)
 
 
@@ -195,25 +187,22 @@ def updateDashLabel(lVal,lIndex):
     dashLabels[lIndex].text=lVal    
     #print("d1 mem: " + str(gc.mem_free())) 
 
-def updateGraph(ratio):
-    graphBmp = displayio.Bitmap(20, 3, 2)
+def updateGraph(left):
+    graphBmp = displayio.Bitmap(5, 20, 2)
     graphPalette = displayio.Palette(2)
     graphPalette[1] = darkPalette[3]
     graphPalette[0] = 0x000000
 
-    graphBmp[0,0]=graphBmp[1,0]=graphBmp[2,0]=graphBmp[3,0]=graphBmp[4,0]=graphBmp[5,0]=1
-    graphBmp[6,0]=graphBmp[7,0]=graphBmp[8,0]=graphBmp[9,0]=graphBmp[10,0]=1
-    graphBmp[11,0]=graphBmp[12,0]=graphBmp[13,0]=graphBmp[14,0]=graphBmp[15,0]=1
-    graphBmp[16,0]=graphBmp[17,0]=graphBmp[18,0]=graphBmp[19,0]=1
-    for x in range(0, ratio):
-            graphBmp[x, 1] = 1
-    graphBmp[0,2]=graphBmp[1,2]=graphBmp[2,2]=graphBmp[3,2]=graphBmp[4,2]=graphBmp[5,2]=1
-    graphBmp[6,2]=graphBmp[7,2]=graphBmp[8,2]=graphBmp[9,2]=graphBmp[10,2]=1
-    graphBmp[11,2]=graphBmp[12,2]=graphBmp[13,2]=graphBmp[14,2]=graphBmp[15,2]=1
-    graphBmp[16,2]=graphBmp[17,2]=graphBmp[18,2]=graphBmp[19,2]=1
+    for x in range(0, left):
+            graphBmp[0, 19-x] = 1
+            graphBmp[1, 19-x] = 1
+    right=20-left
+    for x in range(0, right):
+            graphBmp[3, 19-x] = 1
+            graphBmp[4, 19-x] = 1
 
     graphTg= displayio.TileGrid(graphBmp, pixel_shader=graphPalette)
-    graphG=displayio.Group(x=offset+42,y=26)
+    graphG=displayio.Group(x=offset+52,y=11)
     graphG.append(graphTg)
     group.pop()
     group.append(graphG)
