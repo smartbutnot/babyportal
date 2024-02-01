@@ -21,17 +21,17 @@ if not os.path.exists(file_path):
 queries = [
     {
         # Total time spent breastfeeding today (i.e. on the current date)
-        "query": "select SUM(LeftDuration+RightDuration+BothDuration) from Nursing where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
+        "query": "select IFNULL(SUM(LeftDuration+RightDuration+BothDuration),0) from Nursing where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
         "topic": "baby/nursing"
     },
     {
         # Total time spent breastfeeding on the left side today
-        "query": "select SUM(LeftDuration) from Nursing where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
+        "query": "select IFNULL(SUM(LeftDuration),0) from Nursing where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
         "topic": "baby/nursingleft"
     },
     {
         # Total time spent breastfeeding on the right side today
-        "query": "select SUM(RightDuration) from Nursing where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
+        "query": "select IFNULL(SUM(RightDuration),0) from Nursing where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
         "topic": "baby/nursingright"
     },
     {
@@ -51,7 +51,7 @@ queries = [
     },
     {
         # ml of milk pumped today
-        "query": "select CAST(SUM(Amount) AS INTEGER) from Pump where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
+        "query": "select IFNULL(CAST(SUM(Amount) AS INTEGER),0) from Pump where strftime('%Y%m%d', DATETIME(Time,'unixepoch')) = strftime('%Y%m%d', 'now');",
         "topic": "baby/pumping"
     },
     {
